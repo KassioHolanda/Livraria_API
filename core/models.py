@@ -7,13 +7,14 @@ class Livro(models.Model):
     # quantidade = models.IntegerField('Quantidade Estoque', null=False, default=0)
     genero = models.CharField('Genero Livro', null=False, max_length=255)
     titulo = models.ForeignKey('Titulo', null=False, on_delete=models.CASCADE)
-    gerente = models.ForeignKey('user.User', null=False, on_delete=models.CASCADE)
+
 
 
 class Titulo(models.Model):
     descricao = models.CharField('Descricao', max_length=255, null=False)
     autor = models.CharField('Autor', max_length=255, null=False)
     quantidade_estoque = models.IntegerField('Quantidade Estoque', null=False, default=0)
+    gerente = models.ForeignKey('user.User', null=False, on_delete=models.CASCADE)
 
     # titulo =
 
