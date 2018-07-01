@@ -27,9 +27,9 @@ class Usuario(AbstractUser):
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email"]
     
-    def save(self):
+    def save(self, **kwargs):
         self.set_password(self.password)
-        super().save()
+        super().save(**kwargs)
 
     
     def __str__(self):
