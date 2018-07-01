@@ -10,18 +10,21 @@ class TituloSerializer(serializers.HyperlinkedModelSerializer):
             'descricao',
             'autor',
             'quantidade_estoque',
+            'gerente',
+            'genero',
+            'preco',
+            'gerente',
         )
 
 
 class LivroSerializer(serializers.HyperlinkedModelSerializer):
+    titulo = serializers.SlugRelatedField(queryset=Titulo.objects.all(), slug_field='descricao')
+
     class Meta:
         model = Livro
         fields = (
-            'pk',
-            'preco',
-            'genero',
+            'registro',
             'titulo',
-            'gerente',
         )
 
 

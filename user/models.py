@@ -3,11 +3,10 @@ import re
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.core import validators
 from django.db import models
-from polymorphic.models import PolymorphicModel
 
 
 # Create your models here.
-class User(AbstractUser):
+class Usuario(AbstractUser):
     TIPO_USUARIO = (
         ('GERENTE', 'gerente'),
         ('CLIENTE', 'cliente'),
@@ -28,12 +27,5 @@ class User(AbstractUser):
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email"]
 
-    # def __str__(self):
-    #     return self.nome
-
-# class Gerente(User):
-#     registro_livraria = models.CharField('Registro Livraria', max_length=255, null=True)
-#
-#
-# class Usuario(User):
-#     cpf = models.CharField('CPF', max_length=255, null=True)
+    def __str__(self):
+        return self.username
