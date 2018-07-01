@@ -15,7 +15,7 @@ class Usuario(AbstractUser):
         "Nome do Usuário",
         max_length=30,
         unique=True,
-        validators=[validators.RegexValidator(re.compile("^[\w.@+-]+$"),
+        validators=[validators.RegexValidator(re.compile(r"^[\w.@+-]+$"),
                                               "O nome do user so pode conter letras, digitos ou os""seguintes caracteres @/./+/-/_"
                                               "invalid")])
     email = models.EmailField("E-mail", unique=True)
@@ -26,6 +26,11 @@ class Usuario(AbstractUser):
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email"]
+    
+    def save(self):
+        self.set_password(self.password)
+        super().save()
 
+    
     def __str__(self):
         return self.username

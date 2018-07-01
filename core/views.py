@@ -8,6 +8,8 @@ from core.permissions import GerenteOrReadOnly
 from core.serializers import TituloSerializer, EmprestimoSerializer, LivroSerializer
 from user.views import UsuarioList
 
+from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
+
 
 class TituloList(generics.ListCreateAPIView):
     queryset = Titulo.objects.all()
