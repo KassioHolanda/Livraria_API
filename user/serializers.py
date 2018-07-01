@@ -13,3 +13,14 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'nome',
             'tipo_usuario',
         )
+
+class UserDetailSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Usuario
+        fields = (
+            'url',
+            'username',
+            'email',
+            'nome',
+            'tipo_usuario',
+        )

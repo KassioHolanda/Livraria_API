@@ -14,11 +14,12 @@ class TituloList(generics.ListCreateAPIView):
     serializer_class = TituloSerializer
     name = 'titulo-list'
 
-    # permission_classes = (
-    #     permissions.IsAuthenticated,
-    #     permissions.IsAuthenticatedOrReadOnly,
-    #     # IsOwnerOrReadOnly
-    # )
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly,
+    )
+
+    def perform_create(self, serializer):
+        serializer.save(gerente=self.request.user)
 
 
 class TituloDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -28,8 +29,6 @@ class TituloDetail(generics.RetrieveUpdateDestroyAPIView):
 
     permission_classes = (
         permissions.IsAuthenticatedOrReadOnly,
-        # permissions.IsAuthenticated,
-        # IsOwnerOrReadOnly
     )
 
 
@@ -40,8 +39,10 @@ class LivroList(generics.ListCreateAPIView):
 
     permission_classes = (
         permissions.IsAuthenticatedOrReadOnly,
-        # IsOwnerOrReadOnly
     )
+
+    def perform_create(self, serializer):
+        serializer.save(gerente=self.request.user)
 
 
 class LivroDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -51,7 +52,6 @@ class LivroDetail(generics.RetrieveUpdateDestroyAPIView):
 
     permission_classes = (
         permissions.IsAuthenticatedOrReadOnly,
-        # IsOwnerOrReadOnly
     )
 
 
@@ -60,13 +60,9 @@ class EmprestimoList(generics.ListCreateAPIView):
     serializer_class = EmprestimoSerializer
     name = 'emprestimo-list'
 
-    # permission_classes = (
-    #     GerenteOrReadOnly,
-    #     permissions.IsAuthenticated,
-    #     permissions.IsAuthenticatedOrReadOnly,
-    #     # IsOwnerOrReadOnly
-    #
-    # )
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
 
 
 class EmprestimoDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -74,10 +70,9 @@ class EmprestimoDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EmprestimoSerializer
     name = 'emprestimo-detail'
 
-    # permission_classes = (
-    #     permissions.IsAuthenticated,
-    #     # IsOwnerOrReadOnly
-    # )
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
 
 
 class ApiRoot(generics.GenericAPIView):
