@@ -11,6 +11,9 @@ class TituloSerializer(serializers.HyperlinkedModelSerializer):
             'autor',
             'quantidade_estoque',
             'gerente',
+            'genero',
+            'preco',
+            'gerente',
         )
 
 
@@ -20,11 +23,8 @@ class LivroSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Livro
         fields = (
-            'pk',
-            'preco',
-            'genero',
+            'registro',
             'titulo',
-
         )
 
 

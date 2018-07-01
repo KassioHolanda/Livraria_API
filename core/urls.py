@@ -2,6 +2,8 @@ from django.urls import path
 from core import views
 
 urlpatterns = [
+    path('', views.ApiRoot.as_view(), name=views.ApiRoot.name),
+
     path('titulo/', views.TituloList.as_view(), name=views.TituloList.name),
     path('titulo/<int:pk>', views.TituloDetail.as_view(), name=views.TituloDetail.name),
 

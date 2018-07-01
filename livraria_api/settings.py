@@ -98,11 +98,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
-    # 'DEFAULT_THROTTLE_RATES': {
-    #     'anon': '1/hour',
-    #     'user': '1/hour',
-    #     'api-token': '1/hour',
-    # }
+
 }
 
 
@@ -143,4 +139,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-AUTH_USER_MODEL = 'user.User'
+AUTH_USER_MODEL = 'user.Usuario'
+

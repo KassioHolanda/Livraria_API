@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from user.models import User
+from user.models import Usuario
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = User
+        model = Usuario
         fields = (
             'pk',
             'username',

@@ -1,10 +1,12 @@
 from django.shortcuts import render
-
-# Create your views here.
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
 from rest_framework import generics, permissions
 
 from core.models import Titulo, Livro, Emprestimo
+from core.permissions import GerenteOrReadOnly
 from core.serializers import TituloSerializer, EmprestimoSerializer, LivroSerializer
+from user.views import UsuarioList
 
 
 class TituloList(generics.ListCreateAPIView):
@@ -12,19 +14,21 @@ class TituloList(generics.ListCreateAPIView):
     serializer_class = TituloSerializer
     name = 'titulo-list'
 
-    permission_classes = (
-        permissions.IsAuthenticatedOrReadOnly,
-        # IsOwnerOrReadOnly
-    )
+    # permission_classes = (
+    #     permissions.IsAuthenticated,
+    #     permissions.IsAuthenticatedOrReadOnly,
+    #     # IsOwnerOrReadOnly
+    # )
 
 
 class TituloDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Titulo.objects.all()
-    serializer_class = LivroSerializer
+    serializer_class = TituloSerializer
     name = 'titulo-detail'
 
     permission_classes = (
         permissions.IsAuthenticatedOrReadOnly,
+        # permissions.IsAuthenticated,
         # IsOwnerOrReadOnly
     )
 
@@ -56,10 +60,13 @@ class EmprestimoList(generics.ListCreateAPIView):
     serializer_class = EmprestimoSerializer
     name = 'emprestimo-list'
 
-    permission_classes = (
-        permissions.IsAuthenticated,
-        # IsOwnerOrReadOnly
-    )
+    # permission_classes = (
+    #     GerenteOrReadOnly,
+    #     permissions.IsAuthenticated,
+    #     permissions.IsAuthenticatedOrReadOnly,
+    #     # IsOwnerOrReadOnly
+    #
+    # )
 
 
 class EmprestimoDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -67,7 +74,19 @@ class EmprestimoDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EmprestimoSerializer
     name = 'emprestimo-detail'
 
-    permission_classes = (
-        permissions.IsAuthenticated,
-        # IsOwnerOrReadOnly
-    )
+    # permission_classes = (
+    #     permissions.IsAuthenticated,
+    #     # IsOwnerOrReadOnly
+    # )
+
+
+class ApiRoot(generics.GenericAPIView):
+    name = 'api-root'
+
+    def get(self, request, *args, **kwargs):
+        return Response({
+            'Livros': reverse(LivroList.name, request=request),
+            'Titulos': reverse(TituloList.name, request=request),
+            'Usuarios': reverse(UsuarioList.name, request=request),
+            'Emprestimos': reverse(EmprestimoList.name, request=request)
+        })
