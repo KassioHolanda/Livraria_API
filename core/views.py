@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
+from rest_framework.views import APIView
 
 from core.models import Titulo, Livro, Emprestimo
-from core.permissions import GerenteOrReadOnly
-from core.serializers import TituloSerializer, EmprestimoSerializer, LivroSerializer
+from core.permissions import RegisteredByGerenteOrReadOnly, UserGerenteOrReadOnly
+from core.serializers import TituloSerializer, EmprestimoSerializer, LivroSerializer, TituloDetailSerializer
 from user.views import UsuarioList
 
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
@@ -18,6 +19,8 @@ class TituloList(generics.ListCreateAPIView):
 
     permission_classes = (
         permissions.IsAuthenticatedOrReadOnly,
+        RegisteredByGerenteOrReadOnly,
+        UserGerenteOrReadOnly,
     )
 
     def perform_create(self, serializer):
@@ -25,12 +28,28 @@ class TituloList(generics.ListCreateAPIView):
 
 
 class TituloDetail(generics.RetrieveUpdateDestroyAPIView):
+
+    #
+    # def get(self, request, pk_titulo):
+    #     titulo = Titulo.objects.get(id=pk_titulo)
+    #     titulo_serializer = TituloDetailSerializer(titulo, context={'request': request})
+    #     return Response(titulo_serializer.data)
+    #
+    # def post(self, request):
+    #     titulo_serializer = TituloDetailSerializer(data=request.data)
+    #     if titulo_serializer.is_valid():
+    #         request.data.gerente = request.user
+    #         titulo_serializer.save()
+    #         return Response(titulo_serializer.data, status=status.HTTP_201_CREATED)
+    #     return Response(titulo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     queryset = Titulo.objects.all()
     serializer_class = TituloSerializer
     name = 'titulo-detail'
-
     permission_classes = (
         permissions.IsAuthenticatedOrReadOnly,
+        RegisteredByGerenteOrReadOnly,
+        UserGerenteOrReadOnly,
     )
 
 
@@ -41,6 +60,7 @@ class LivroList(generics.ListCreateAPIView):
 
     permission_classes = (
         permissions.IsAuthenticatedOrReadOnly,
+        UserGerenteOrReadOnly,
     )
 
     def perform_create(self, serializer):
@@ -54,6 +74,7 @@ class LivroDetail(generics.RetrieveUpdateDestroyAPIView):
 
     permission_classes = (
         permissions.IsAuthenticatedOrReadOnly,
+        UserGerenteOrReadOnly,
     )
 
 
