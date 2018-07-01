@@ -2,9 +2,8 @@ from django.shortcuts import render
 
 # Create your views here.
 from rest_framework import generics, permissions
-
 from user.models import Usuario
-from user.permissions import SelfOrReadOnly
+from user.permissions import GerenteOrReadOnly
 from user.serializers import UserSerializer, UserDetailSerializer
 
 
@@ -14,11 +13,10 @@ class UsuarioList(generics.ListCreateAPIView):
     name = 'usuario-list'
 
     permission_classes = (
-        # SelfOrReadOnly
+        GerenteOrReadOnly,
         permissions.IsAuthenticated,
+
     )
-
-
 
 
 class UsuarioDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -27,6 +25,7 @@ class UsuarioDetail(generics.RetrieveUpdateDestroyAPIView):
     name = 'usuario-detail'
 
     permission_classes = (
-        # SelfOrReadOnly
-        #
+        GerenteOrReadOnly,
+        permissions.IsAuthenticated,
+
     )
