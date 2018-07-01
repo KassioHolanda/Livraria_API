@@ -38,10 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'user',
     'oauth2_provider',
     'rest_framework',
-    'rest_framework.authtoken',
-    'user'
+    'rest_framework_swagger'
 ]
 
 MIDDLEWARE = [
@@ -91,22 +91,40 @@ DATABASES = {
 }
 
 OAUTH2_PROVIDER = {
-    # this is the list of available scopes
-    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'}
+    'SCOPES': {'read': 'Read scope', 'write': 'Write scope'}
 }
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS':
-    'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
     ),
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '200/hour',
+        'user': '1000/hour'
+    }
 
 }
 
-
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        "swagger_auth": {
+            "type": "oauth2",
+            "tokenUrl": "http://localhost:8000/o/token/",
+            "flow": "password",
+            "scopes": {
+                "write": "Write scope",
+                "read": "Read scope"
+            }
+        },
+    }
+}
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 

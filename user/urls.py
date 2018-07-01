@@ -1,6 +1,9 @@
 
 from user import views
 from django.urls import include, path
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title='Users')
 
 urlpatterns = [
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
