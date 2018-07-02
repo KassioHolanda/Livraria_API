@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework import generics, permissions, status
@@ -21,6 +22,12 @@ class TituloList(generics.ListCreateAPIView):
         permissions.IsAuthenticatedOrReadOnly,
         IsGerenteOrReadOnly,
     )
+
+    filter_backends = (
+        DjangoFilterBackend,
+    )
+
+    filter_fields = ('descricao', 'genero')
 
     def perform_create(self, serializer):
         serializer.save(gerente=self.request.user)
@@ -67,6 +74,12 @@ class EmprestimoList(generics.ListCreateAPIView):
         IsClienteOrReadOnly,
         permissions.IsAuthenticated,
     )
+
+    filter_backends = (
+        DjangoFilterBackend,
+    )
+
+    filter_fields = ('titulo', 'usuario')
 
 
 class EmprestimoDetail(generics.RetrieveUpdateDestroyAPIView):
