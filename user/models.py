@@ -4,8 +4,10 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from django.core import validators
 from django.db import models
 
-
 # Create your models here.
+from core.models import Emprestimo
+
+
 class Usuario(AbstractUser):
     TIPO_USUARIO = (
         ('GERENTE', 'gerente'),
@@ -26,11 +28,14 @@ class Usuario(AbstractUser):
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email"]
-    
+
     def save(self, **kwargs):
         self.set_password(self.password)
         super().save(**kwargs)
 
-    
     def __str__(self):
         return self.username
+
+    @property
+    def meus_emprestimos(self):
+        return Emprestimo.objects.filter(usuario=self).filter(devolvido=False)

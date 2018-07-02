@@ -9,9 +9,19 @@ class RegisteredByGerenteOrReadOnly(permissions.BasePermission):
             return obj.gerente == request.user
 
 
-class UserGerenteOrReadOnly(permissions.BasePermission):
+class IsGerenteOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
+            print(request.user.tipo_usuario)
             return True
         else:
-            return obj.gerente.tipo_usuario == 'GERENTE'
+            return request.user.tipo_usuario == 'GERENTE'
+
+
+class IsClienteOrReadOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            print(request.user.tipo_usuario)
+            return True
+        else:
+            return request.user.tipo_usuario == 'CLIENTE'
