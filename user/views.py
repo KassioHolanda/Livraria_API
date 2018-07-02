@@ -1,6 +1,8 @@
 from django.shortcuts import render
 
 # Create your views here.
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 from rest_framework import generics, permissions
 from user.models import Usuario
 from user.permissions import GerenteOrReadOnly
@@ -17,6 +19,20 @@ class UsuarioList(generics.ListCreateAPIView):
         permissions.IsAuthenticated,
 
     )
+
+    filter_backends = (
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    )
+
+    search_fields = ('username', 'email')
+    ordering_fields = ('username', 'email')
+
+    # filter_backends = (
+    #     DjangoFilterBackend,
+    # )
+    #
+    # filter_fields = ('nome', 'tipo_usuario')
 
 
 class UsuarioDetail(generics.RetrieveUpdateDestroyAPIView):

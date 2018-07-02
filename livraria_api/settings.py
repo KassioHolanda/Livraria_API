@@ -118,7 +118,9 @@ REST_FRAMEWORK = {
         'anon': '200/hour',
         'user': '1000/hour'
     },
-    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    )
 
 }
 
