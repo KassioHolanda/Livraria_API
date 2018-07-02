@@ -7,22 +7,6 @@ class TituloSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Titulo
         fields = (
-            'url',
-            'pk',
-            'descricao',
-            'autor',
-            'quantidade_estoque',
-            # 'gerente',
-            'genero',
-            'preco',
-
-        )
-
-
-class TituloDetailSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Titulo
-        fields = (
             'pk',
             'descricao',
             'autor',
@@ -35,7 +19,7 @@ class TituloDetailSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class LivroSerializer(serializers.HyperlinkedModelSerializer):
-    titulo = serializers.SlugRelatedField(queryset=Titulo.objects.all(), slug_field='descricao')
+    # titulo = serializers.SlugRelatedField(queryset=Titulo.objects.all(), slug_field='descricao')
 
     class Meta:
         model = Livro
@@ -43,11 +27,12 @@ class LivroSerializer(serializers.HyperlinkedModelSerializer):
             'pk',
             'registro',
             'titulo',
+            'emprestado',
         )
 
 
 class EmprestimoSerializer(serializers.HyperlinkedModelSerializer):
-    usuario = serializers.SlugRelatedField(queryset=Emprestimo.objects.all(), slug_field='nome')
+    # usuario = serializers.SlugRelatedField(queryset=Emprestimo.objects.all(), slug_field='nome')
 
     class Meta:
         model = Emprestimo
@@ -56,7 +41,7 @@ class EmprestimoSerializer(serializers.HyperlinkedModelSerializer):
             'titulo',
             'usuario',
             'quantidade_dias_emprestimo',
-            'data',
+            # 'data',
             'devolvido',
             'data_devolucao',
         )
