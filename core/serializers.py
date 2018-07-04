@@ -36,9 +36,9 @@ class LivroSerializer(serializers.HyperlinkedModelSerializer):
             'titulo',
         )
 
-    def validate(self, data):
-        if Livro.objects.filter(registro=data['registro']).exists():
-            raise serializers.ValidationError('ja possui livro com esse registro')
+    # def validate(self, data):
+    #     if Livro.objects.filter(registro=data['registro']).exists():
+    #         raise serializers.ValidationError('ja possui livro com esse registro')
 
 
 class EmprestimoSerializer(serializers.HyperlinkedModelSerializer):
@@ -51,9 +51,3 @@ class EmprestimoSerializer(serializers.HyperlinkedModelSerializer):
             'devolvido',
             'data_devolucao',
         )
-
-    def validate(self, data):
-        if Emprestimo.objects.filter(usuario=data['usuario']).filter(devolvido=False):
-            raise serializers.ValidationError('usuario ja possui emprestimos')
-        if data['data_devolucao'].date <= datetime.date.today():
-            raise serializers.ValidationError('verifique a data de devolução')
