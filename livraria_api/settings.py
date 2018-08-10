@@ -26,7 +26,7 @@ SECRET_KEY = 's%904gv4e^fx#96(z^*(uru&!*)tzb$e0lm09thh38v@g+0p3$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'oauth2_provider',
     'rest_framework',
     'rest_framework_swagger',
     'django_filters',
@@ -90,10 +89,6 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '5432',
     }
-}
-
-OAUTH2_PROVIDER = {
-    'SCOPES': {'read': 'Read scope', 'write': 'Write scope'}
 }
 
 
