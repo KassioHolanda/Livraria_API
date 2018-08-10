@@ -36,11 +36,16 @@ class Titulo(models.Model):
     autor = models.ForeignKey('core.Autor', related_name="titulos", on_delete=models.CASCADE, verbose_name="Autor")
     preco_aluguel = models.DecimalField(max_digits=20, decimal_places=2, verbose_name="Preço do Aluguel")
     categoria = models.ForeignKey('core.Categoria', related_name="titulos", max_length=255, on_delete=models.CASCADE, verbose_name="Categoria")
-    estoque = models.IntegerField(default=0, verbose_name="Quantidade em Estoque")
     editora = models.ForeignKey('core.Editora', related_name="titulos", on_delete=models.CASCADE, verbose_name="Editora")
     data_cadastro = models.DateTimeField(auto_now_add=True, verbose_name="Data de Cadastro")
     ano = models.IntegerField(verbose_name="Ano do Livro")
 
+    @property
+    def estoque(self):
+        from core.models import Livro, Emprestimo
+        emprestados = Emprestimo.objects.filter(livro__titulo=self).count()
+        estoque = Livro.objects.filter(titulo=self).count()
+        return estoque - emprestados
 
     class Meta:
         ordering = ('nome',)
@@ -53,8 +58,8 @@ class Emprestimo(models.Model):
     livro = models.ForeignKey('core.Livro', related_name='emprestimos', on_delete=models.CASCADE, verbose_name="Livro")
     usuario = models.ForeignKey('user.Usuario', related_name='emprestimos', on_delete=models.CASCADE, verbose_name="Usuário")
     quantidade_dias = models.IntegerField(default=1, verbose_name="Dias Emprestado")
-    data_emprestimo = models.DateField(auto_now_add=True, verbose_name="Data do Emprestimo")
-    data_devolucao = models.DateField(auto_now_add=True, verbose_name="Data da devolução")
+    data_emprestimo = models.DateTimeField(auto_now_add=True, verbose_name="Data do Emprestimo")
+    data_devolucao = models.DateTimeField(auto_now_add=True, verbose_name="Data da devolução")
     devolvido = models.BooleanField(default=False, verbose_name="Emprestimo já devolvido ?")
 
 

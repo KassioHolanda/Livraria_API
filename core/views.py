@@ -40,6 +40,14 @@ class TituloViewSet(viewsets.ModelViewSet):
     #permission_classes = []
 
 
+class LivroViewSet(viewsets.ModelViewSet):
+
+    name='livro'
+    queryset = Livro.objects.all()
+    serializer_class = LivroSerializer
+    #permission_classes = []
+
+
 """
 class ApiRoot(generics.GenericAPIView):
     name = 'api-root'

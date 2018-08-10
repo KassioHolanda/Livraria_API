@@ -27,7 +27,7 @@ class AutorSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class TituloSerializer(serializers.HyperlinkedModelSerializer):
-
+    estoque = serializers.ReadOnlyField()
     class Meta:
         model = Titulo
         fields = (
@@ -45,19 +45,20 @@ class TituloSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class LivroSerializer(serializers.HyperlinkedModelSerializer):
-    # titulo = serializers.SlugRelatedField(queryset=Titulo.objects.all(), slug_field='descricao')
 
     class Meta:
         model = Livro
         fields = (
             'pk',
-            'registro',
+            'numero',
             'titulo',
+            'data_cadastro'
         )
 
     def validate(self, data):
-        if Livro.objects.filter(registro=data['registro']).exists():
-            raise serializers.ValidationError('ja possui livro com esse registro')
+        if Livro.objects.filter(numero=data['numero']).exists():
+            raise serializers.ValidationError('Esse livro já foi cadastrado.')
+        return data
 
 
 class EmprestimoSerializer(serializers.HyperlinkedModelSerializer):

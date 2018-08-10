@@ -7,10 +7,11 @@ from rest_framework_swagger.views import get_swagger_view
 schema_view = get_swagger_view(title='Livraria API')
 
 router = DefaultRouter()
-router.register('titulo', views.TituloViewSet, base_name=views.TituloViewSet.name)
-router.register('autor', views.AutorViewSet, base_name=views.AutorViewSet.name)
-router.register('categoria', views.CategoriaViewSet, base_name=views.CategoriaViewSet.name)
-router.register('editora', views.EditoraViewSet, base_name=views.EditoraViewSet.name)
+router.register('titulos', views.TituloViewSet, base_name=views.TituloViewSet.name)
+router.register('autores', views.AutorViewSet, base_name=views.AutorViewSet.name)
+router.register('categorias', views.CategoriaViewSet, base_name=views.CategoriaViewSet.name)
+router.register('editoras', views.EditoraViewSet, base_name=views.EditoraViewSet.name)
+router.register('livros', views.LivroViewSet, base_name=views.LivroViewSet.name)
 
 
 urlpatterns = router.urls
