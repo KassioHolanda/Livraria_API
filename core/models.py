@@ -59,8 +59,7 @@ class Emprestimo(models.Model):
     usuario = models.ForeignKey('user.Usuario', related_name='emprestimos', on_delete=models.CASCADE, verbose_name="Usuário")
     quantidade_dias = models.IntegerField(default=1, verbose_name="Dias Emprestado")
     data_emprestimo = models.DateTimeField(auto_now_add=True, verbose_name="Data do Emprestimo")
-    data_devolucao = models.DateTimeField(auto_now_add=True, verbose_name="Data da devolução")
-    devolvido = models.BooleanField(default=False, verbose_name="Emprestimo já devolvido ?")
+    data_devolucao = models.DateTimeField(null=True, blank=True, verbose_name="Data da devolução")
 
 
 class Reserva(models.Model):

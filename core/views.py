@@ -8,7 +8,6 @@ from core.models import Titulo, Livro, Emprestimo, Autor, Categoria, Editora
 #from core.permissions import RegisteredByGerenteOrReadOnly, IsGerenteOrReadOnly, IsClienteOrReadOnly
 from core.serializers import (TituloSerializer, EmprestimoSerializer, LivroSerializer, 
     TituloSerializer, AutorSerializer, EditoraSerializer, CategoriaSerializer)
-from user.views import UsuarioList
 
 
 class AutorViewSet(viewsets.ModelViewSet):
@@ -46,6 +45,14 @@ class LivroViewSet(viewsets.ModelViewSet):
     queryset = Livro.objects.all()
     serializer_class = LivroSerializer
     #permission_classes = []
+
+class EmprestimoViewSet(viewsets.ModelViewSet):
+
+    name='emprestimo'
+    queryset = Emprestimo.objects.all()
+    serializer_class = EmprestimoSerializer
+    #permission_classes = []
+
 
 
 """

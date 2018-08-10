@@ -66,14 +66,16 @@ class EmprestimoSerializer(serializers.HyperlinkedModelSerializer):
         model = Emprestimo
         fields = (
             'pk',
-            'titulo',
+            'livro',
             'usuario',
-            'devolvido',
-            'data_devolucao',
+            'quantidade_dias',
+            'data_emprestimo',
+            'data_devolucao'
         )
 
     def validate(self, data):
-        if Emprestimo.objects.filter(usuario=data['usuario']).filter(devolvido=False):
-            raise serializers.ValidationError('usuario ja possui emprestimos')
-        if data['data_devolucao'].date <= datetime.date.today():
-            raise serializers.ValidationError('verifique a data de devolução')
+        from core.models import Emprestimo
+
+        if Emprestimo.objects.filter(usuario=data['usuario']).filter(data_devolucao__isnull=True):
+            raise serializers.ValidationError('O já fez 1 Livro emprestimo. O limite máximo é 1')
+        return data
