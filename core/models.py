@@ -3,13 +3,21 @@ from django.db import models
 class Editora(models.Model):
     nome = models.CharField(max_length=255, verbose_name='Editora')
 
+    def __str__(self):
+        return self.nome
+
 class Autor(models.Model):
     nome = models.CharField(max_length=255, verbose_name='Autor')
     data_nascimento = models.DateField(null=True, blank=True, verbose_name='Data de Nascimento')
 
+    def __str__(self):
+        return self.nome
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=255, verbose_name='Nome da Categoria')
+    
+    def __str__(self):
+        return self.nome
 
 class Livro(models.Model):
     numero = models.IntegerField(verbose_name="Número")
@@ -25,11 +33,11 @@ class Titulo(models.Model):
     nome = models.CharField(max_length=255, verbose_name="Nome")
     descricao = models.CharField(max_length=255, verbose_name="Descrição")
     isbn = models.CharField(max_length=255, verbose_name="ISBN")
-    autor = models.ForeignKey('core.Autor', on_delete=models.CASCADE, verbose_name="Autor")
+    autor = models.ForeignKey('core.Autor', related_name="titulos", on_delete=models.CASCADE, verbose_name="Autor")
     preco_aluguel = models.DecimalField(max_digits=20, decimal_places=2, verbose_name="Preço do Aluguel")
-    categoria = models.ForeignKey('core.Categoria', max_length=255, on_delete=models.CASCADE, verbose_name="Categoria")
+    categoria = models.ForeignKey('core.Categoria', related_name="titulos", max_length=255, on_delete=models.CASCADE, verbose_name="Categoria")
     estoque = models.IntegerField(default=0, verbose_name="Quantidade em Estoque")
-    editora = models.ForeignKey('core.Editora', on_delete=models.CASCADE, verbose_name="Editora")
+    editora = models.ForeignKey('core.Editora', related_name="titulos", on_delete=models.CASCADE, verbose_name="Editora")
     data_cadastro = models.DateTimeField(auto_now_add=True, verbose_name="Data de Cadastro")
     ano = models.IntegerField(verbose_name="Ano do Livro")
 

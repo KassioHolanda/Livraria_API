@@ -1,27 +1,44 @@
 from rest_framework import serializers
-
-from core.models import Titulo, Livro, Emprestimo
+from core.models import Titulo, Livro, Emprestimo, Autor, Categoria, Editora
 import datetime
+
+class CategoriaSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Categoria
+        fields = (
+            'pk', 'nome', 'titulos'
+        )
+
+
+class EditoraSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Editora
+        fields = (
+            'pk', 'nome', 'titulos'
+        )
+
+
+class AutorSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Autor
+        fields = (
+            'pk', 'nome', 'titulos'
+        )
 
 
 class TituloSerializer(serializers.HyperlinkedModelSerializer):
+
     class Meta:
         model = Titulo
         fields = (
-            'pk',
-            'nome',
-            'descricao',
-            'isbn',
-            'autor',
-            'estoque',
-            'categoria',
-            'preco_aluguel',
-            'editora',
-            'ano'
+            'pk', 'nome', 'descricao','isbn', 'autor','estoque', 
+            'categoria', 'preco_aluguel', 'editora','ano'
         )
 
-    def validate(self, data):
-        pass
+
+
+    #def validate(self, data):
+    #    pass
         #if Titulo.objects.filter(descricao=data['descricao']).exists():
         #    raise serializers.ValidationError('ja possui um titulo com essa descrição')
     
