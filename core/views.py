@@ -9,10 +9,6 @@ from core.permissions import RegisteredByGerenteOrReadOnly, IsGerenteOrReadOnly,
 from core.serializers import TituloSerializer, EmprestimoSerializer, LivroSerializer, TituloSerializer
 from user.views import UsuarioList
 
-
-# from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
-
-
 class TituloList(generics.ListCreateAPIView):
     queryset = Titulo.objects.all()
     serializer_class = TituloSerializer
@@ -20,7 +16,6 @@ class TituloList(generics.ListCreateAPIView):
 
     permission_classes = (
         permissions.IsAuthenticatedOrReadOnly,
-        IsGerenteOrReadOnly,
     )
 
     filter_backends = (
@@ -28,8 +23,8 @@ class TituloList(generics.ListCreateAPIView):
         filters.OrderingFilter,
     )
 
-    search_fields = ('descricao', 'genero')
-    ordering_fields = ('descricao', 'genero')
+    search_fields = ('nome', 'categoria')
+    ordering_fields = ('nome', 'categoria')
 
     def perform_create(self, serializer):
         serializer.save(gerente=self.request.user)
@@ -51,7 +46,6 @@ class LivroList(generics.ListCreateAPIView):
     name = 'livro-list'
 
     permission_classes = (
-        # UserGerenteLivroOrReadOnly,
         permissions.IsAuthenticatedOrReadOnly,
     )
 
@@ -103,7 +97,7 @@ class ApiRoot(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         return Response({
             'Livros': reverse(LivroList.name, request=request),
-            'Titulos': reverse(TituloList.name, request=request),
-            'Usuarios': reverse(UsuarioList.name, request=request),
-            'Emprestimos': reverse(EmprestimoList.name, request=request)
+            'Títulos': reverse(TituloList.name, request=request),
+            'Usuários': reverse(UsuarioList.name, request=request),
+            'Empréstimos': reverse(EmprestimoList.name, request=request)
         })
