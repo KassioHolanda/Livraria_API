@@ -1,46 +1,60 @@
 from django.db import models
 
+class Editora(models.Model):
+    nome = models.CharField(max_length=255, verbose_name='Editora')
 
-# Create your models here.
+class Autor(models.Model):
+    nome = models.CharField(max_length=255, verbose_name='Autor')
+    data_nascimento = models.DateField(null=True, blank=True, verbose_name='Data de Nascimento')
+
+
+class Categoria(models.Model):
+    nome = models.CharField(max_length=255, verbose_name='Nome da Categoria')
+
 class Livro(models.Model):
-    registro = models.IntegerField('Registro', null=False)
-    titulo = models.ForeignKey('Titulo', null=False, on_delete=models.CASCADE)
+    numero = models.IntegerField(verbose_name="Número")
+    titulo = models.ForeignKey('Titulo', on_delete=models.CASCADE, verbose_name="Título")
+    data_cadastro =  models.DateField(auto_now_add=True, verbose_name="Data do Cadastro")
 
-    # emprestado = models.BooleanField('Emprestado?', null=False, default=False)
 
     def __str__(self):
-        return self.registro
+        return str(self.numero)
 
 
 class Titulo(models.Model):
-    descricao = models.CharField('Descricao', max_length=255, null=False)
-    autor = models.CharField('Autor', max_length=255, null=False)
-    preco = models.FloatField('Preço Livro', null=False)
-    genero = models.CharField('Genero Livro', null=False, max_length=255)
-    quantidade_estoque = models.IntegerField('Quantidade Estoque', null=False, default=0)
-    gerente = models.ForeignKey('user.Usuario', null=False, on_delete=models.CASCADE)
+    nome = models.CharField(max_length=255, verbose_name="Nome")
+    descricao = models.CharField(max_length=255, verbose_name="Descrição")
+    isbn = models.CharField(max_length=255, verbose_name="ISBN")
+    autor = models.ForeignKey('core.Autor', on_delete=models.CASCADE, verbose_name="Autor")
+    preco_aluguel = models.DecimalField(max_digits=20, decimal_places=2, verbose_name="Preço do Aluguel")
+    categoria = models.ForeignKey('core.Categoria', max_length=255, on_delete=models.CASCADE, verbose_name="Categoria")
+    estoque = models.IntegerField(default=0, verbose_name="Quantidade em Estoque")
+    editora = models.ForeignKey('core.Editora', on_delete=models.CASCADE, verbose_name="Editora")
+    data_cadastro = models.DateTimeField(auto_now_add=True, verbose_name="Data de Cadastro")
+    ano = models.IntegerField(verbose_name="Ano do Livro")
+
 
     class Meta:
-        ordering = ('descricao',)
-
-    # @property
-    # def quantidade_estoque(self):
-    #     return Livro.objects.filter(titulo=self).filter(emprestado=False).count()
+        ordering = ('nome',)
 
     def __str__(self):
-        return self.descricao
+        return self.nome
 
 
 class Emprestimo(models.Model):
-    titulo = models.ForeignKey(Titulo, related_name='titulo_emprestimo', on_delete=models.CASCADE)
-    usuario = models.ForeignKey('user.Usuario', related_name='meus_emprestimos', on_delete=models.CASCADE)
-    data = models.DateField('Data Emprestimo', auto_now_add=True)
-    devolvido = models.BooleanField('Emprestimo Devolvido', default=False)
-    data_devolucao = models.DateField('Data Devolução', null=True)
+    livro = models.ForeignKey('core.Livro', related_name='emprestimos', on_delete=models.CASCADE, verbose_name="Livro")
+    usuario = models.ForeignKey('user.Usuario', related_name='emprestimos', on_delete=models.CASCADE, verbose_name="Usuário")
+    quantidade_dias = models.IntegerField(default=1, verbose_name="Dias Emprestado")
+    data_emprestimo = models.DateField(auto_now_add=True, verbose_name="Data do Emprestimo")
+    data_devolucao = models.DateField(auto_now_add=True, verbose_name="Data da devolução")
+    devolvido = models.BooleanField(default=False, verbose_name="Emprestimo já devolvido ?")
+
+
+class Reserva(models.Model):
+    titulo = models.ForeignKey('core.Titulo', related_name='reservas', on_delete=models.CASCADE, verbose_name="Título")
+    usuario = models.ForeignKey('user.Usuario', related_name='reservas', on_delete=models.CASCADE, verbose_name="Usuário")
+    data_reserva = models.DateField(auto_now_add=True, verbose_name="Data da Reserva")
+    ativa = models.BooleanField(default=False, verbose_name="Reserva Ativa ?")
 
 
 
-    # def __str__(self):
-    #     if self.devolvido:
-    #         return 'O titulo ' + self.titulo + ' foi Devolvido.'
-    #     return 'O titulo ' + self.titulo + ' ainda esta em empretimo.'
