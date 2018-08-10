@@ -6,6 +6,9 @@ class Editora(models.Model):
     def __str__(self):
         return self.nome
 
+    class Meta:
+        ordering = ['nome']
+
 class Autor(models.Model):
     nome = models.CharField(max_length=255, verbose_name='Autor')
     data_nascimento = models.DateField(null=True, blank=True, verbose_name='Data de Nascimento')
@@ -13,11 +16,17 @@ class Autor(models.Model):
     def __str__(self):
         return self.nome
 
+    class Meta:
+        ordering = ['nome']
+
 class Categoria(models.Model):
     nome = models.CharField(max_length=255, verbose_name='Nome da Categoria')
     
     def __str__(self):
         return self.nome
+
+    class Meta:
+        ordering = ['nome']
 
 class Livro(models.Model):
     numero = models.IntegerField(verbose_name="Número")
@@ -27,6 +36,9 @@ class Livro(models.Model):
 
     def __str__(self):
         return str(self.numero)
+
+    class Meta:
+        ordering = ['numero']
 
 
 class Titulo(models.Model):
@@ -47,11 +59,12 @@ class Titulo(models.Model):
         estoque = Livro.objects.filter(titulo=self).count()
         return estoque - emprestados
 
-    class Meta:
-        ordering = ('nome',)
 
     def __str__(self):
         return self.nome
+
+    class Meta:
+        ordering = ['nome']
 
 
 class Emprestimo(models.Model):
@@ -61,12 +74,17 @@ class Emprestimo(models.Model):
     data_emprestimo = models.DateTimeField(auto_now_add=True, verbose_name="Data do Emprestimo")
     data_devolucao = models.DateTimeField(null=True, blank=True, verbose_name="Data da devolução")
 
+    class Meta:
+        ordering = ['-id']
+
 
 class Reserva(models.Model):
     titulo = models.ForeignKey('core.Titulo', related_name='reservas', on_delete=models.CASCADE, verbose_name="Título")
     usuario = models.ForeignKey('user.Usuario', related_name='reservas', on_delete=models.CASCADE, verbose_name="Usuário")
     data_reserva = models.DateField(auto_now_add=True, verbose_name="Data da Reserva")
-    ativa = models.BooleanField(default=False, verbose_name="Reserva Ativa ?")
+    ativa = models.BooleanField(default=True, verbose_name="Reserva Ativa ?")
 
 
+    class Meta:
+        ordering = ['-id']
 

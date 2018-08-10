@@ -13,4 +13,5 @@ schema_view = get_swagger_view(title='Users')
 urlpatterns = [
     path('jwt/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('jwt/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api-auth/', include('rest_framework.urls')),
 ]

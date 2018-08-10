@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import Titulo, Livro, Emprestimo, Autor, Categoria, Editora
+from core.models import Titulo, Livro, Emprestimo, Autor, Categoria, Editora, Reserva
 import datetime
 
 class CategoriaSerializer(serializers.HyperlinkedModelSerializer):
@@ -9,6 +9,11 @@ class CategoriaSerializer(serializers.HyperlinkedModelSerializer):
             'pk', 'nome', 'titulos'
         )
 
+    def validate(self, data):
+        if Categoria.objects.filter(nome=data['nome']).exists():
+            raise serializers.ValidationError('Já possui um categoria com esse nome')
+        return data
+
 
 class EditoraSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -16,6 +21,11 @@ class EditoraSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'pk', 'nome', 'titulos'
         )
+
+    def validate(self, data):
+        if Editora.objects.filter(nome=data['nome']).exists():
+            raise serializers.ValidationError('Já possui uma editora com esse nome')
+        return data
 
 
 class AutorSerializer(serializers.HyperlinkedModelSerializer):
@@ -37,10 +47,10 @@ class TituloSerializer(serializers.HyperlinkedModelSerializer):
 
 
 
-    #def validate(self, data):
-    #    pass
-        #if Titulo.objects.filter(descricao=data['descricao']).exists():
-        #    raise serializers.ValidationError('ja possui um titulo com essa descrição')
+    def validate(self, data):
+        if Titulo.objects.filter(nome=data['nome']).exists():
+            raise serializers.ValidationError('Já possui um título com esse nome')
+        return data
     
 
 
@@ -59,6 +69,18 @@ class LivroSerializer(serializers.HyperlinkedModelSerializer):
         if Livro.objects.filter(numero=data['numero']).exists():
             raise serializers.ValidationError('Esse livro já foi cadastrado.')
         return data
+
+
+class ReservaSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Reserva
+        fields = (
+            'pk',
+            'titulo',
+            'usuario',
+            'data_reserva',
+            'ativa'
+        )
 
 
 class EmprestimoSerializer(serializers.HyperlinkedModelSerializer):

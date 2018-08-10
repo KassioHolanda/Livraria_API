@@ -15,13 +15,8 @@ router.register('editoras', views.EditoraViewSet, base_name=views.EditoraViewSet
 router.register('livros', views.LivroViewSet, base_name=views.LivroViewSet.name)
 router.register('emprestimos', views.EmprestimoViewSet, base_name=views.EmprestimoViewSet.name)
 router.register('user', UserViewSets.UsuarioViewSet, base_name=UserViewSets.UsuarioViewSet.name)
-
+router.register('reserva', views.ReservaViewSet, base_name=views.ReservaViewSet.name)
 
 urlpatterns = router.urls
 
-
-    #path('docs/', schema_view)
-   # path('titulo/', views.TituloViewSet.as_view({'get':'list', 'post': 'create'}), name=views.TituloViewSet.name),
-   # path('autor/', views.AutorViewSet.as_view({'get':'list', 'post': 'create'}), name=views.AutorViewSet.name),
-   # path('categoria/', views.CategoriaViewSet.as_view({'get':'list', 'post': 'create'}), name=views.CategoriaViewSet.name),
-   # path('editora/', views.EditoraViewSet.as_view({'get':'list', 'post': 'create'}), name=views.EditoraViewSet.name),
+#path('docs/', schema_view)
