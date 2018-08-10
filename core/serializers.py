@@ -9,20 +9,22 @@ class TituloSerializer(serializers.HyperlinkedModelSerializer):
         model = Titulo
         fields = (
             'pk',
+            'nome',
             'descricao',
+            'isbn',
             'autor',
-            'quantidade_estoque',
-            'gerente',
-            'genero',
-            'preco',
-            'gerente',
+            'estoque',
+            'categoria',
+            'preco_aluguel',
+            'editora',
+            'ano'
         )
 
     def validate(self, data):
-        if Titulo.objects.filter(descricao=data['descricao']).exists():
-            raise serializers.ValidationError('ja possui um titulo com essa descrição')
-        if data['quantidade_estoque'] < 0:
-            raise serializers.ValidationError('quantidade em estoque não pode ser negativo')
+        pass
+        #if Titulo.objects.filter(descricao=data['descricao']).exists():
+        #    raise serializers.ValidationError('ja possui um titulo com essa descrição')
+    
 
 
 class LivroSerializer(serializers.HyperlinkedModelSerializer):
