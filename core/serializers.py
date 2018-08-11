@@ -24,6 +24,8 @@ class TituloSerializer(serializers.HyperlinkedModelSerializer):
         if data['quantidade_estoque'] < 0:
             raise serializers.ValidationError('quantidade em estoque não pode ser negativo')
 
+        return data
+
 
 class LivroSerializer(serializers.HyperlinkedModelSerializer):
     # titulo = serializers.SlugRelatedField(queryset=Titulo.objects.all(), slug_field='descricao')
@@ -36,9 +38,10 @@ class LivroSerializer(serializers.HyperlinkedModelSerializer):
             'titulo',
         )
 
-    # def validate(self, data):
-    #     if Livro.objects.filter(registro=data['registro']).exists():
-    #         raise serializers.ValidationError('ja possui livro com esse registro')
+    def validate(self, data):
+        if Livro.objects.filter(registro=data['registro']).exists():
+            raise serializers.ValidationError('ja possui livro com esse registro')
+        return data
 
 
 class EmprestimoSerializer(serializers.HyperlinkedModelSerializer):

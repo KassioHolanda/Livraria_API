@@ -51,7 +51,7 @@ class LivroList(generics.ListCreateAPIView):
     name = 'livro-list'
 
     permission_classes = (
-        # UserGerenteLivroOrReadOnly,
+        IsGerenteOrReadOnly,
         permissions.IsAuthenticatedOrReadOnly,
     )
 
@@ -62,7 +62,7 @@ class LivroDetail(generics.RetrieveUpdateDestroyAPIView):
     name = 'livro-detail'
 
     permission_classes = (
-        # UserGerenteLivroOrReadOnly,
+        IsGerenteOrReadOnly,
         permissions.IsAuthenticatedOrReadOnly,
     )
 

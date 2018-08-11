@@ -30,7 +30,8 @@ class Usuario(AbstractUser):
     REQUIRED_FIELDS = ["email"]
 
     def save(self, **kwargs):
-        self.set_password(self.password)
+        self.set_password("123456")
+        # self.is_superuser(True)
         super().save(**kwargs)
 
     def __str__(self):
