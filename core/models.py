@@ -3,6 +3,10 @@ from django.db import models
 class Editora(models.Model):
     nome = models.CharField(max_length=255, verbose_name='Editora')
 
+    # @property
+    # def meus_titulos(self):
+    #     return Titulo.objects.filter(edi)
+
     def __str__(self):
         return self.nome
 
@@ -21,7 +25,7 @@ class Autor(models.Model):
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=255, verbose_name='Nome da Categoria')
-    
+
     def __str__(self):
         return self.nome
 

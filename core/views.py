@@ -18,21 +18,21 @@ class AutorViewSet(viewsets.ModelViewSet):
     name='autor'
     queryset = Autor.objects.all()
     serializer_class = AutorSerializer
-    permission_classes = [isLibrarian,]
+    permission_classes = [isLibrarianOrReadOnly,]
 
 class CategoriaViewSet(viewsets.ModelViewSet):
 
     name='categoria'
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
-    permission_classes = [isLibrarian,]
+    permission_classes = [isLibrarianOrReadOnly,]
 
 class EditoraViewSet(viewsets.ModelViewSet):
 
     name='editora'
     queryset = Editora.objects.all()
     serializer_class = EditoraSerializer
-    permission_classes = [isLibrarian,]
+    permission_classes = [isLibrarianOrReadOnly,]
 
 class TituloViewSet(viewsets.ModelViewSet):
 

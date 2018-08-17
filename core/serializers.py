@@ -2,11 +2,15 @@ from rest_framework import serializers
 from core.models import Titulo, Livro, Emprestimo, Autor, Categoria, Editora, Reserva
 import datetime
 
+from user.models import Usuario
+from user.serializer import UsuarioSerializer
+
+
 class CategoriaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Categoria
         fields = (
-            'pk', 'nome', 'titulos'
+            'id', 'nome'
         )
 
     def validate(self, data):
@@ -19,7 +23,7 @@ class EditoraSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Editora
         fields = (
-            'pk', 'nome', 'titulos'
+            'id', 'nome'
         )
 
     def validate(self, data):
@@ -32,34 +36,36 @@ class AutorSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Autor
         fields = (
-            'pk', 'nome', 'titulos'
+            'id', 'nome'
         )
 
 
 class TituloSerializer(serializers.HyperlinkedModelSerializer):
     estoque = serializers.ReadOnlyField()
+    categoria = CategoriaSerializer(many=False, read_only=True)
+    editora = EditoraSerializer(many=False, read_only=True)
+    autor = AutorSerializer(many=False, read_only=True)
+
     class Meta:
         model = Titulo
         fields = (
-            'pk', 'nome', 'descricao','isbn', 'autor','estoque', 
-            'categoria', 'preco_aluguel', 'editora','ano'
+            'id', 'nome', 'descricao', 'isbn', 'autor', 'estoque',
+            'categoria', 'preco_aluguel', 'editora', 'ano'
         )
-
-
 
     def validate(self, data):
         if Titulo.objects.filter(nome=data['nome']).exists():
             raise serializers.ValidationError('Já possui um título com esse nome')
         return data
-    
 
 
 class LivroSerializer(serializers.HyperlinkedModelSerializer):
+    titulo = TituloSerializer(many=False, read_only=True)
 
     class Meta:
         model = Livro
         fields = (
-            'pk',
+            'id',
             'numero',
             'titulo',
             'data_cadastro'
@@ -75,7 +81,7 @@ class ReservaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Reserva
         fields = (
-            'pk',
+            'id',
             'titulo',
             'usuario',
             'data_reserva',
@@ -84,10 +90,13 @@ class ReservaSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class EmprestimoSerializer(serializers.HyperlinkedModelSerializer):
+    usuario = UsuarioSerializer(many=False, read_only=True)
+    livro = LivroSerializer(many=False, read_only=True)
+
     class Meta:
         model = Emprestimo
         fields = (
-            'pk',
+            'id',
             'livro',
             'usuario',
             'quantidade_dias',
