@@ -3,9 +3,9 @@ from django.db import models
 class Editora(models.Model):
     nome = models.CharField(max_length=255, verbose_name='Editora')
 
-    # @property
-    # def meus_titulos(self):
-    #     return Titulo.objects.filter(edi)
+    @property
+    def titulos(self):
+        return Titulo.objects.filter(editora=self)
 
     def __str__(self):
         return self.nome
@@ -16,6 +16,10 @@ class Editora(models.Model):
 class Autor(models.Model):
     nome = models.CharField(max_length=255, verbose_name='Autor')
     data_nascimento = models.DateField(null=True, blank=True, verbose_name='Data de Nascimento')
+
+    @property
+    def titulos(self):
+        return Titulo.objects.filter(autor=self)
 
     def __str__(self):
         return self.nome
@@ -55,13 +59,14 @@ class Titulo(models.Model):
     editora = models.ForeignKey('core.Editora', related_name="titulos", on_delete=models.CASCADE, verbose_name="Editora")
     data_cadastro = models.DateTimeField(auto_now_add=True, verbose_name="Data de Cadastro")
     ano = models.IntegerField(verbose_name="Ano do Livro")
+    estoque = models.IntegerField(verbose_name='Estoque', default=0)
 
-    @property
-    def estoque(self):
-        from core.models import Livro, Emprestimo
-        emprestados = Emprestimo.objects.filter(livro__titulo=self).count()
-        estoque = Livro.objects.filter(titulo=self).count()
-        return estoque - emprestados
+    # @property
+    # def estoque(self):
+    #     from core.models import Livro, Emprestimo
+    #     emprestados = Emprestimo.objects.filter(livro__titulo=self).count()
+    #     estoque = Livro.objects.filter(titulo=self).count()
+    #     return estoque - emprestados
 
 
     def __str__(self):
@@ -72,7 +77,7 @@ class Titulo(models.Model):
 
 
 class Emprestimo(models.Model):
-    livro = models.ForeignKey('core.Livro', related_name='emprestimos', on_delete=models.CASCADE, verbose_name="Livro")
+    titulo = models.ForeignKey('core.Titulo', related_name='emprestimos', on_delete=models.CASCADE, verbose_name="Titulo")
     usuario = models.ForeignKey('user.Usuario', related_name='emprestimos', on_delete=models.CASCADE, verbose_name="Usuário")
     quantidade_dias = models.IntegerField(default=1, verbose_name="Dias Emprestado")
     data_emprestimo = models.DateTimeField(auto_now_add=True, verbose_name="Data do Emprestimo")
@@ -87,7 +92,6 @@ class Reserva(models.Model):
     usuario = models.ForeignKey('user.Usuario', related_name='reservas', on_delete=models.CASCADE, verbose_name="Usuário")
     data_reserva = models.DateField(auto_now_add=True, verbose_name="Data da Reserva")
     ativa = models.BooleanField(default=True, verbose_name="Reserva Ativa ?")
-
 
     class Meta:
         ordering = ['-id']

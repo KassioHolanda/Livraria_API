@@ -18,3 +18,13 @@ class isLibrarianOrReadOnly(permissions.BasePermission):
         elif request.user.is_anonymous:
             return False
         return request.user.tipo_usuario == 'BIBLIOTECÁRIO'
+
+
+class isUserOrReadOnly(permissions.BasePermission):
+    def has_permission(self, request, view):
+
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        elif request.user.is_anonymous:
+            return False
+        return request.user.tipo_usuario == 'USUÁRIO'
